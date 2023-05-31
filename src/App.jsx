@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import DataDisplay from './DataDisplay';
+import HardWareDisplay from './HardwareDisplay';
 import SetTemp from './SetTemp';
 
 const App = () => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [itemsLength, setItemsLength] = useState(null);
   const [warnTemperature, setWarnTemperature] = useState('');
   const [dangerTemperature, setDangerTemperature] = useState('');
@@ -15,7 +17,7 @@ const App = () => {
   const fetchData = async () => {
     try {
       const now = new Date();
-      
+
       const startDt = new Date(now.getTime() - 48 * 60 * 60 * 1000);
       const startDtString = startDt.toISOString().slice(0, 4) + startDt.toISOString().slice(5, 7) + startDt.toISOString().slice(8, 10);
       const startHh = startDt.getHours();
@@ -38,21 +40,29 @@ const App = () => {
       setData(items.item[length - 1]);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <DataDisplay data={data} />
-      <div id="dynamicForm">
-        <SetTemp
-          data={data}
-          warnTemperature={warnTemperature}
-          setWarnTemperature={setWarnTemperature}
-          dangerTemperature={dangerTemperature}
-          setDangerTemperature={setDangerTemperature}
-        />
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <DataDisplay data={data} />
+          <HardWareDisplay data={data} />
+          <div id="dynamicForm">
+            <SetTemp
+              warnTemperature={warnTemperature}
+              setWarnTemperature={setWarnTemperature}
+              dangerTemperature={dangerTemperature}
+              setDangerTemperature={setDangerTemperature}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

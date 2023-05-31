@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-const SetTemp = ({ userTemperature, setUserTemperature }) => {
+const SetTemp = ({ warnTemperature, setWarnTemperature, dangerTemperature, setDangerTemperature }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // 폼 제출 시의 로직을 처리
@@ -17,12 +17,25 @@ const SetTemp = ({ userTemperature, setUserTemperature }) => {
           특정 온도 설정 : &nbsp;
           <input
             type="text"
-            value={userTemperature}
-            onChange={(e) => setUserTemperature(e.target.value)}
+            value={warnTemperature}
+            onChange={(e) => setWarnTemperature(e.target.value)}
           />
           &nbsp;
+          <button type="submit">제출</button>
         </label>
-        <button type="submit">제출</button>
+
+        <br/>
+
+        <label>
+          특정 온도 설정 : &nbsp;
+          <input
+            type="text"
+            value={setDangerTemperature}
+            onChange={(e) => setDangerTemperature(e.target.value)}
+          />
+          &nbsp;
+          <button type="submit">제출</button>
+        </label>
       </form>
     );
 
@@ -31,7 +44,7 @@ const SetTemp = ({ userTemperature, setUserTemperature }) => {
     return () => {
       ReactDOM.unmountComponentAtNode(formContainer);
     };
-  }, [userTemperature, setUserTemperature]);
+  }, [warnTemperature, setWarnTemperature]);
 
   return null; // 렌더링할 내용이 없으므로 null을 반환합니다.
 };
